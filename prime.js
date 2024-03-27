@@ -7,6 +7,8 @@ function assert(condition,message){
    flag=1;
 }
 function checkPrime(a){
+  assert(typeof a ==='number',"Argument is not a number");
+  assert(a>1,"Is not a prime number");
     for(let i=2;i<=Math.sqrt(a);i++){
         if(a%i===0)
           return false;
