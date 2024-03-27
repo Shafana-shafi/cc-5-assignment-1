@@ -1,8 +1,5 @@
-let flag=0;
+console.log("WELCOME TO CHECK PRIME FUNCTION")
 function assert(condition,message){
-    if(!flag){
-    console.log("WELCOME TO CHECK PRIME FUNCTION")
-    }
    if(!condition){
     console.assert(message)
     throw(message);
@@ -21,4 +18,4 @@ function prime(a){
     assert(a>1,"Is not a prime number");
     assert(checkPrime(a),"Is not a prime number");
   }
-prime(11);
+prime(10);
