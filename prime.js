@@ -3,7 +3,7 @@ import assert from 'assert';
 function isPrime(num) {
   // Pre-conditions
   assert(num > 1, "Number is less than 2");
-  assert(typeof num === 'number', "Argument is not a number");
+  assert(typeof num === 'number', "Argument must be a number");
   for (let i = 2; i <= Math.sqrt(num); i++) {
     if (num % i === 0) {
       return false;
