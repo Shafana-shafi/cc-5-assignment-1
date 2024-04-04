@@ -5,9 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "run-prime":"nodemon prime.js",
-    "run-fib": "nodemon fib.js"
+    "test": "vitest"
   },
   "author": "Shafana",
   "license": "ISC",
@@ -16,6 +14,7 @@
   },
   "devDependencies": {
     "nodemon": "^3.1.0",
-    "prettier": "^3.2.5"
+    "prettier": "^3.2.5",
+    "vitest": "^1.4.0"
   }
 }
