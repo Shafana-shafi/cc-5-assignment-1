@@ -70,29 +70,29 @@ export function listFromArray(array) {
 /**
  * Inserts a new node with newData before the first node containing targetData.
  * @param {Object} listRef The linked list object.
- * @param {*} targetData The data to find in the list.
+ * @param {node} targetNode The target node before which the new data has to be inserted.
  * @param {*} newData The data for the new node.
- * @returns {boolean} True if the node was inserted, false otherwise.
+ * @returns {listRef} returns updated list.
  */
-export function insertBefore(listRef, targetData, newData) {
+export function insertBeforeNode(listRef, targetNode, newData) {
     let currentNode = listRef.head;
     let prevNode = null;
     while (currentNode !== null) {
-        if (currentNode.data === targetData) {
+        if (currentNode === targetNode) {
             const newNode = { data: newData, next: currentNode };
             if (prevNode === null) {
                 listRef.head = newNode;
             } else {
-
                 prevNode.next = newNode;
             }
-            return true;
+            return listRef;
         }
         prevNode = currentNode;
         currentNode = currentNode.next;
     }
-    return false;
+    return listRef;
 }
+
 /**
  * Removes the last node from the list.
  * @param {Object} listRef The linked list object.

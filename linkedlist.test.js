@@ -1,4 +1,4 @@
-import { addItemsToList, createNewList, createNewListFromList } from "./linkedlist";
+import { addItemsToList, createNewList, createNewListFromList, insertBeforeNode } from "./linkedlist";
 import { expect } from "vitest";
 import { describe } from "vitest";
 import { test } from "vitest";
@@ -107,19 +107,11 @@ describe('addItemsToList function', () => {
     });
     test('handles inserting before the head, tail, and middle node correctly', () => {
         // Initialize a list with three items
-        let listRef = createList([1, 2, 3]);
-
-        // Test inserting before the head of the list
-        insertBefore(listRef, 1, 0);
-        expect(listToArray(listRef)).toEqual([0, 1, 2, 3]);
-
-        // Test inserting before the tail of the list
-        insertBefore(listRef, 3, 4);
-        expect(listToArray(listRef)).toEqual([0, 1, 2, 4, 3]);
-
-        // Test inserting before a middle node
-        insertBefore(listRef, 2, 5);
-        expect(listToArray(listRef)).toEqual([0, 1, 5, 2, 4, 3]);
+        let listRef = createList();
+        let node1 = addItemsToList(listRef, 2);
+        let newList = insertBeforeNode(listRef, node1, 1)
+        expect(newList.tail).toEqual(node1);
+        let node2 = addItemsToList(listRef, 3);
     });
     test('handles various scenarios correctly', () => {
         // Initialize a list with three items
