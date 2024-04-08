@@ -35,6 +35,30 @@ describe('addItemsToList function', () => {
             }
         }
         expect(list1.tail).toBe(currentNode);
+        const array = [1, 2, 3, 4, 5];
+        const listFromArray = createList(array);
+        expect(listFromArray.head.data).toBe(1);
+        expect(listFromArray.tail.data).toBe(5);
+        expect(listFromArray.head.next.data).toBe(2);
+        expect(listFromArray.tail.next).toBe(null);
+
+        // Creating a list from another list
+        const originalList = { head: { data: 1, next: { data: 2, next: null } }, tail: { data: 2, next: null } };
+        const listFromList = createList(originalList);
+        expect(listFromList.head.data).toBe(1);
+        expect(listFromList.tail.data).toBe(2);
+        expect(listFromList.head.next.data).toBe(2);
+        expect(listFromList.tail.next).toBe(null);
+
+        // Creating an empty list from null
+        const listFromNull = createList(null);
+        expect(listFromNull.head).toBe(null);
+        expect(listFromNull.tail).toBe(null);
+
+        // Creating an empty list from an empty array
+        const listFromEmptyArray = createList([]);
+        expect(listFromEmptyArray.head).toBe(null);
+        expect(listFromEmptyArray.tail).toBe(null);
     });
     test('list to array', () => {
         // Test Case 1: Empty linked list

@@ -1,2 +1,4 @@
 node_modules/
 jsdoc.json/
+vitest.config.js/
+coverage/
