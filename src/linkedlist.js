@@ -1,13 +1,14 @@
+/* eslint-disable linebreak-style */
 /**
  * Creates a new linked list from the given array or an existing linked list.
  * @param {Array|Object} arrayOrList The input can be an array of elements or an existing linked list object.
  * @returns {Object} A new linked list object. If the arrayOrList is an array, the new list will contain the elements of the array. If the arrayOrList is a linked list, the new list will be a copy of the input list.
  */
 export function createList(arrayOrList = null) {
-    let list = { head: null, tail: null };
+    const list = { head: null, tail: null };
     if (Array.isArray(arrayOrList)) {
         arrayOrList.forEach(element => {
-            let newNode = { data: element, next: null };
+            const newNode = { data: element, next: null };
             if (list.head === null) {
                 list.head = newNode;
                 list.tail = newNode;
@@ -17,10 +18,10 @@ export function createList(arrayOrList = null) {
             }
         });
     }
-    else if (arrayOrList && typeof arrayOrList === 'object' && arrayOrList.hasOwnProperty('head') && arrayOrList.hasOwnProperty('tail')) {
+    else if (arrayOrList && typeof arrayOrList === 'object' && arrayOrList.head && arrayOrList.tail) {
         let currentNode = arrayOrList.head;
         while (currentNode !== null) {
-            let newNode = { data: currentNode.data, next: null };
+            const newNode = { data: currentNode.data, next: null };
             if (list.head === null) {
                 list.head = newNode;
                 list.tail = newNode;
@@ -45,24 +46,29 @@ export function createList(arrayOrList = null) {
  * @returns {Object} The new node added to the list.
  */
 export function addItemsToList(listRef, data) {
-    let newNode = { data: data, next: null };
-    if (listRef.head === null) {
-        listRef.head = newNode;
-        listRef.tail = newNode;
+    // Create a local variable that references the same object as listRef
+    const list = listRef;
+
+    const newNode = { data, next: null };
+    if (list.head === null) {
+        list.head = newNode;
+        list.tail = newNode;
     } else {
-        listRef.tail.next = newNode;
-        listRef.tail = newNode;
+        list.tail.next = newNode;
+        list.tail = newNode;
     }
     return newNode;
 }
+
+
 /**
  * Converts an array to a linked list.
  * @param {Array} array The input array.
  * @returns {Object} The linked list created from the array.
  */
 export function listFromArray(array) {
-    let list = createList();
-    for (let i = 0; i < array.length; i++) {
+    const list = createList();
+    for (let i = 0; i < array.length; i += 1) {
         addItemsToList(list, array[i])
     }
     return list;
@@ -72,25 +78,26 @@ export function listFromArray(array) {
  * @param {Object} listRef The linked list object.
  * @param {node} targetNode The target node before which the new data has to be inserted.
  * @param {*} newData The data for the new node.
- * @returns {listRef} returns updated list.
+ * @returns {list} returns updated list.
  */
 export function insertBeforeNode(listRef, targetNode, newData) {
-    let currentNode = listRef.head;
+    const list = listRef;
+    let currentNode = list.head;
     let prevNode = null;
     while (currentNode !== null) {
         if (currentNode === targetNode) {
             const newNode = { data: newData, next: currentNode };
             if (prevNode === null) {
-                listRef.head = newNode;
+                list.head = newNode;
             } else {
                 prevNode.next = newNode;
             }
-            return listRef;
+            return list;
         }
         prevNode = currentNode;
         currentNode = currentNode.next;
     }
-    return listRef;
+    return list;
 }
 
 /**
@@ -99,20 +106,21 @@ export function insertBeforeNode(listRef, targetNode, newData) {
  * @returns {boolean} True if the node was removed, false if the list is empty.
  */
 export function removeLast(listRef) {
-    if (listRef.head === null) {
+    const list = listRef;
+    if (list.head === null) {
         return false;
     }
-    if (listRef.head === listRef.tail) {
-        listRef.head = null;
-        listRef.tail = null;
+    if (list.head === list.tail) {
+        list.head = null;
+        list.tail = null;
         return true;
     }
-    let cur = listRef.head;
-    while (cur.next !== listRef.tail) {
+    let cur = list.head;
+    while (cur.next !== list.tail) {
         cur = cur.next;
     }
     cur.next = null;
-    listRef.tail = cur;
+    list.tail = cur;
     return true;
 }
 /**
@@ -122,21 +130,24 @@ export function removeLast(listRef) {
  * @param {*} newData The data for the new node.
  * @returns {boolean} True if the node was inserted, false otherwise.
  */
-export function insertAfter(listRef, targetData, newData) {
-    let currentNode = listRef.head;
-    while (currentNode !== null) {
-        if (currentNode.data === targetData) {
-            const newNode = { data: newData, next: currentNode.next };
-            currentNode.next = newNode;
-            if (currentNode === listRef.tail) {
-                listRef.tail = newNode;
-            }
-            return true;
+export function insertAfter(listRef, targetNode, newData) {
+    const list = listRef;
+    const target = targetNode;
+    if (targetNode === null || targetNode === list.tail) {
+        const newNode = { data: newData, next: null };
+        if (list.tail) {
+            list.tail.next = newNode;
+        } else {
+            list.head = newNode;
         }
-        currentNode = currentNode.next;
+        list.tail = newNode;
+    } else {
+        const newNode = { data: newData, next: targetNode.next };
+        target.next = newNode;
     }
-    return false;
+    return true;
 }
+
 /**
  * Converts a linked list to an array.
  * @param {Object} list The linked list object.
@@ -164,7 +175,7 @@ export function filterList(listRef, isString = (node) => {
     return false;
 }) {
     let cur = listRef.head;
-    let result = [];
+    const result = [];
     while (cur !== null) {
         if (isString(cur)) {
             result.push(cur.data);
@@ -180,20 +191,21 @@ export function filterList(listRef, isString = (node) => {
  * @returns {boolean} True if the node was removed, false otherwise.
  */
 export function removeItem(listRef, item) {
+    const list = listRef
     let currentNode = listRef.head;
     let prevNode = null;
 
     while (currentNode !== null) {
         if (currentNode.data === item) {
             if (prevNode === null) {
-                listRef.head = currentNode.next;
-                if (listRef.head === null) {
-                    listRef.tail = null;
+                list.head = currentNode.next;
+                if (list.head === null) {
+                    list.tail = null;
                 }
             } else {
                 prevNode.next = currentNode.next;
                 if (currentNode.next === null) {
-                    listRef.tail = prevNode;
+                    list.tail = prevNode;
                 }
             }
             return true;
