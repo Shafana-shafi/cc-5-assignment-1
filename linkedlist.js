@@ -1,28 +1,43 @@
 /**
- * Creates a new linked list from the given array or returns an empty list if no array is provided.
- * @param {Array} [array=null] The array of elements to be added to the linked list. If not provided, an empty list is returned.
- * @returns {Object} An object representing the linked list.If the input is not an array, an empty list object is returned.
+ * Creates a new linked list from the given array or an existing linked list.
+ * @param {Array|Object} arrayOrList The input can be an array of elements or an existing linked list object.
+ * @returns {Object} A new linked list object. If the arrayOrList is an array, the new list will contain the elements of the array. If the arrayOrList is a linked list, the new list will be a copy of the input list.
  */
-export function createList(array = null) {
-    if (Array.isArray(array)) {
-        let list = { head: null, tail: null }
-        array.forEach(element => {
-            let newNode = { data: element, next: null }
+export function createList(arrayOrList = null) {
+    let list = { head: null, tail: null };
+    if (Array.isArray(arrayOrList)) {
+        arrayOrList.forEach(element => {
+            let newNode = { data: element, next: null };
             if (list.head === null) {
                 list.head = newNode;
                 list.tail = newNode;
-            }
-            else {
+            } else {
                 list.tail.next = newNode;
-                list.tail = newNode
+                list.tail = newNode;
             }
         });
-        return list;
+    }
+    else if (arrayOrList && typeof arrayOrList === 'object' && arrayOrList.hasOwnProperty('head') && arrayOrList.hasOwnProperty('tail')) {
+        let currentNode = arrayOrList.head;
+        while (currentNode !== null) {
+            let newNode = { data: currentNode.data, next: null };
+            if (list.head === null) {
+                list.head = newNode;
+                list.tail = newNode;
+            } else {
+                list.tail.next = newNode;
+                list.tail = newNode;
+            }
+            currentNode = currentNode.next;
+        }
     }
     else {
-        return { head: null, tail: null };
+        return list;
     }
+
+    return list;
 }
+
 /**
  * Adds a new node with data to the end of a linked list.
  * @param {Object} listRef The linked list object.
@@ -187,33 +202,4 @@ export function removeItem(listRef, item) {
         currentNode = currentNode.next;
     }
     return false;
-}
-/**
- * Creates a new linked list from the given data.
- * @param {Object} data The data to create the new list from. Must have `head` and `tail` properties.
- * @returns {Object|null} The new linked list object or null if the input data is invalid.
- */
-export function createNewList(data) {
-    if (!(data.head && data.tail)) {
-        console.log(data);
-        return null;
-    }
-    else {
-        let list = { head: null, tail: null }
-        let cur = data.head;
-        while (cur != null) {
-            let newNode = { data: cur.data, next: null }
-            if (list.head === null) {
-                list.head = newNode;
-                list.tail = newNode;
-            }
-            else {
-                list.tail.next = newNode;
-                list.tail = newNode
-            }
-            cur = cur.next;
-        }
-        console.log(list);
-        return list;
-    }
 }

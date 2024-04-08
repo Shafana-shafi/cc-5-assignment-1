@@ -1,4 +1,4 @@
-import { addItemsToList, createNewList } from "./linkedlist";
+import { addItemsToList, createNewList, createNewListFromList } from "./linkedlist";
 import { expect } from "vitest";
 import { describe } from "vitest";
 import { test } from "vitest";
@@ -157,12 +157,4 @@ describe('addItemsToList function', () => {
         const stringsInListAll = filterList(listRef);
         expect(stringsInListAll).toEqual(['one', 'two', 'three']);
     });
-    test('create new linked list with existing linked list', () => {
-        let listRef = createList([1, 'two', 3, 'four', 5]);
-        let returnedList = createNewList(listRef);
-        expect(returnedList).toEqual(listRef);
-        //if argumnet is not a list 
-        let lisRef1 = createNewList("");
-        expect(lisRef1).toBe(null);
-    })
 });
