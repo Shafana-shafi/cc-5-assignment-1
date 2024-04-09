@@ -1,4 +1,4 @@
 node_modules/
-jsdoc.json/
-vitest.config.js/
+jsdoc.json
+vitest.config.js
 coverage/
