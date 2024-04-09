@@ -4,6 +4,7 @@
  * @param {Array|Object} arrayOrList The input can be an array of elements or an existing linked list object.
  * @returns {Object} A new linked list object. If the arrayOrList is an array, the new list will contain the elements of the array. If the arrayOrList is a linked list, the new list will be a copy of the input list.
  */
+// eslint-disable-next-line max-classes-per-file
 export function createList(arrayOrList = null) {
     const list = { head: null, tail: null };
     if (Array.isArray(arrayOrList)) {
@@ -214,4 +215,206 @@ export function removeItem(listRef, item) {
         currentNode = currentNode.next;
     }
     return false;
+}
+export function traverse(listRef, visit) {
+    let currentNode = listRef.head;
+    while (currentNode) {
+        visit(currentNode);
+        currentNode = currentNode.next;
+
+    }
+}
+
+
+export function linkedListOop() {
+    /**
+ * Represents a node in a linked list.
+ * @class
+ */
+    class Node {
+        /**
+     * Create a node.
+     * @param {*} value - The value to be stored in the node.
+     */
+        constructor(value) {
+            this.value = value;
+            this.next = null;
+        }
+    }
+    /**
+ * Represents a linked list.
+ * @class
+ */
+    class LinkedList {
+        constructor(arrayOrList = null) {
+            this.head = null;
+            this.size = 0;
+            this.tail = null;
+
+            if (Array.isArray(arrayOrList)) {
+                arrayOrList.forEach(element => {
+                    const newNode = new Node(element);
+                    if (this.head === null) {
+                        this.head = newNode;
+                        this.tail = newNode;
+                    } else {
+                        this.tail.next = newNode;
+                        this.tail = newNode;
+                    }
+                    this.size += 1;
+                });
+            } else if (arrayOrList && typeof arrayOrList === 'object' && arrayOrList.head && arrayOrList.tail) {
+                let currentNode = arrayOrList.head;
+                while (currentNode !== null) {
+                    const newNode = new Node(currentNode.value);
+                    if (this.head === null) {
+                        this.head = newNode;
+                        this.tail = newNode;
+                    } else {
+                        this.tail.next = newNode;
+                        this.tail = newNode;
+                    }
+                    this.size += 1;
+                    currentNode = currentNode.next;
+                }
+            }
+        }
+        // 
+        /**
+         * Convert the list to an array.
+         * @returns {Array} An array containing the values of the list.
+         */
+
+        listToArray() {
+            const array = [];
+            let currentNode = this.head;
+            while (currentNode !== null) {
+                array.push(currentNode.value);
+                currentNode = currentNode.next;
+            }
+            return array;
+        }
+
+        /**
+        * Insert a new node before a target node.
+        * @param {*} targetData - The value of the target node.
+        * @param {*} newData - The value for the new node.
+        * @returns {boolean} True if the node was inserted, false otherwise.
+        */
+
+        insertBeforeNode(targetData, newData) {
+            let currentNode = this.head;
+            let prevNode = null;
+            while (currentNode !== null) {
+                if (currentNode.value === targetData) {
+                    const newNode = new Node(newData);
+                    if (prevNode === null) {
+                        newNode.next = this.head;
+                        this.head = newNode;
+                    } else {
+                        newNode.next = currentNode;
+                        prevNode.next = newNode;
+                    }
+                    return true;
+                }
+                prevNode = currentNode;
+                currentNode = currentNode.next;
+            }
+            return false;
+        }
+        /**
+        * Remove the last node from the list.
+        * @returns {boolean} True if the node was removed, false if the list is empty.
+        */
+
+        removeLast() {
+            if (this.head === null) {
+                return false;
+            }
+            if (this.head === this.tail) {
+                this.head = null;
+                this.tail = null;
+                return true;
+            }
+            let cur = this.head;
+            while (cur.next !== this.tail) {
+                cur = cur.next;
+            }
+            cur.next = null;
+            this.tail = cur;
+            return true;
+        }
+        /**
+                 * Insert a new node after a target node.
+                 * @param {*} targetData - The value of the target node.
+                 * @param {*} newData - The value for the new node.
+                 * @returns {boolean} True if the node was inserted, false otherwise.
+                 */
+
+        insertAfterNode(targetData, newData) {
+            let currentNode = this.head;
+            while (currentNode !== null) {
+                if (currentNode.value === targetData) {
+                    const newNode = new Node(newData);
+                    newNode.next = currentNode.next;
+                    currentNode.next = newNode;
+                    if (newNode.next === null) {
+                        this.tail = newNode;
+                    }
+                    return true;
+                }
+                currentNode = currentNode.next;
+            }
+            return false;
+        }
+        /**
+        * Filter the list based on a predicate function.
+        * @param {Function} isString - A predicate function to test each node's value.
+        * @returns {Array} An array of values that pass the predicate test.
+        */
+
+        filterList(isString = (value) => typeof value === 'string') {
+            let cur = this.head;
+            const result = [];
+            while (cur !== null) {
+                if (isString(cur.value)) {
+                    result.push(cur.value);
+                }
+                cur = cur.next;
+            }
+            return result;
+        }
+
+        /**
+                 * Remove a specified item from the list.
+                 * @param {*} item - The item to remove from the list.
+                 * @returns {boolean} True if the item was removed, false otherwise.
+                 */
+
+        removeItem(item) {
+            let currentNode = this.head;
+            let prevNode = null;
+            while (currentNode !== null) {
+                if (currentNode.value === item) {
+                    if (prevNode === null) {
+                        this.head = currentNode.next;
+                        if (this.head === null) {
+                            this.tail = null;
+                        }
+                    } else {
+                        prevNode.next = currentNode.next;
+                        if (currentNode.next === null) {
+                            this.tail = prevNode;
+                        }
+                    }
+                    return true;
+                }
+                prevNode = currentNode;
+                currentNode = currentNode.next;
+            }
+            return false;
+        }
+
+    }
+    return LinkedList
 }

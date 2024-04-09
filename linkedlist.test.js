@@ -1,5 +1,4 @@
-import { expect, describe, test } from "vitest";
-import { createList, listToArray, addItemsToList, insertBeforeNode, removeItem, insertAfter, removeLast, filterList } from './src/linkedlist'
+import { createList, listToArray, addItemsToList, insertBeforeNode, removeItem, insertAfter, removeLast, filterList, linkedListOop, traverse } from './src/linkedlist'
 
 describe('addItemsToList function', () => {
     const listRef = createList();
@@ -180,5 +179,82 @@ describe('addItemsToList function', () => {
         listRef3 = createList(['one', 'two', 'three']);
         const stringsInListAll = filterList(listRef3);
         expect(stringsInListAll).toEqual(['one', 'two', 'three']);
+    });
+    test('Tests for traverse using mock', () => {
+        const listRef4 = createList([1, 2, 3, 4]);
+        const mockFunction = vi.fn();
+        traverse(listRef4, mockFunction);
+        expect(mockFunction.mock.calls[0][0].data).toBe(1);
+    })
+
+});
+describe("Test for linked list in oop", () => {
+    let LinkedList;
+    let list;
+
+    beforeEach(() => {
+        LinkedList = linkedListOop();
+        list = new LinkedList([1, 2, 3]);
+    });
+
+    test('insertAfterNode adds a node after the target node', () => {
+        const targetNode = list.head.next;
+        list.insertAfterNode(targetNode, 4);
+    });
+
+    test('insertBeforeNode adds a node before the target node', () => {
+        const targetNode = list.head.next;
+        list.insertBeforeNode(targetNode, 0);
+    });
+    test('removeLast from non-empty list', () => {
+        list = new LinkedList([1, 2, 3]);
+        const removed = list.removeLast();
+        expect(removed).toBe(true);
+        expect(list.head.value).toBe(1);
+        expect(list.head.next.value).toBe(2);
+        expect(list.tail.value).toBe(2);
+        expect(list.tail.next).toBeNull();
+    });
+
+    test('removeLast from list with one node', () => {
+        list = new LinkedList([1]);
+        const removed = list.removeLast();
+        expect(removed).toBe(true);
+        expect(list.head).toBeNull();
+        expect(list.tail).toBeNull();
+    });
+
+    test('removeLast from empty list', () => {
+        list = new LinkedList();
+        const removed = list.removeLast();
+        expect(removed).toBe(false);
+        expect(list.head).toBeNull();
+        expect(list.tail).toBeNull();
+    });
+    test('createList should create a linked list with provided data array', () => {
+        expect(list.listToArray()).toEqual([1, 2, 3]);
+    });
+    test('addItemsToList should add data to the linked list', () => {
+        list = new LinkedList([1, 2]);
+        expect(list.listToArray()).toEqual([1, 2]);
+    });
+    test('insertBefore should insert new data before the target data', () => {
+        const list1 = new LinkedList([1, 3, 4]);
+        list1.insertBeforeNode(3, 2);
+        expect(list1.listToArray()).toEqual([1, 2, 3, 4]);
+    });
+    test('removeLast should remove the last item from the linked list', () => {
+        const list2 = new LinkedList([1, 2, 3]);
+        list2.removeLast();
+        expect(list2.listToArray()).toEqual([1, 2]);
+    });
+    test('filterList should filter the list based on the provided predicate function', () => {
+        list = new LinkedList([1, 'two', 3, 'four']);
+        const result = list.filterList((node) => typeof node === 'string');
+        expect(result).toEqual(['two', 'four']);
+    });
+    test('removeItem should remove the specified item from the list', () => {
+        list.removeItem(2);
+        expect(list.listToArray()).toEqual([1, 3]);
     });
 });
