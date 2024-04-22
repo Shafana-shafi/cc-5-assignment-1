@@ -228,23 +228,23 @@ export function traverse(listRef, visit) {
 
 export function linkedListOop() {
     /**
- * Represents a node in a linked list.
- * @class
- */
+     * Represents a node in a linked list.
+      * @class
+    */
     class Node {
         /**
-     * Create a node.
-     * @param {*} value - The value to be stored in the node.
-     */
+        * Create a node.
+        * @param {*} value - The value to be stored in the node.
+        */
         constructor(value) {
             this.value = value;
             this.next = null;
         }
     }
     /**
- * Represents a linked list.
- * @class
- */
+     * Represents a linked list.
+     * @class
+    */
     class LinkedList {
         constructor(arrayOrList = null) {
             this.head = null;
@@ -345,11 +345,11 @@ export function linkedListOop() {
             return true;
         }
         /**
-                 * Insert a new node after a target node.
-                 * @param {*} targetData - The value of the target node.
-                 * @param {*} newData - The value for the new node.
-                 * @returns {boolean} True if the node was inserted, false otherwise.
-                 */
+        * Insert a new node after a target node.
+        * @param {*} targetData - The value of the target node.
+        * @param {*} newData - The value for the new node.
+        * @returns {boolean} True if the node was inserted, false otherwise.
+        */
 
         insertAfterNode(targetData, newData) {
             let currentNode = this.head;
@@ -386,10 +386,10 @@ export function linkedListOop() {
         }
 
         /**
-                 * Remove a specified item from the list.
-                 * @param {*} item - The item to remove from the list.
-                 * @returns {boolean} True if the item was removed, false otherwise.
-                 */
+        * Remove a specified item from the list.
+        * @param {*} item - The item to remove from the list.
+        * @returns {boolean} True if the item was removed, false otherwise.
+        */
 
         removeItem(item) {
             let currentNode = this.head;
