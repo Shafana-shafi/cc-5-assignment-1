@@ -1,45 +1,40 @@
 import bst from './src/bst'
 
-describe('Binary Search Tree', () => {
-    let bst1;
+describe('Insertion', () => {
     /**
-     * Test suite for insertion operations.
+     *  Prepare the binary search tree before each test.
      */
-    describe('Insertion', () => {
-        /**
-         *  Prepare the binary search tree before each test.
-         */
-        beforeEach(() => {
-            const { BSTree } = bst();
-            bst1 = new BSTree();
-        });
-        /**
-         *  Test case to ensure insertion of a single node
-         */
-        test('should insert a single node', () => {
+    let bst1;
+    beforeEach(() => {
+        // Define a comparison function for numbers
+        const compare = (a, b) => a - b;
+        const { BSTree } = bst(compare);
+        bst1 = new BSTree();
+    });
 
-            bst1.insert(5);
-            expect(bst1.root.value).toBe(5);
-            expect(bst1.root.left).toBeNull();
-            expect(bst1.root.right).toBeNull();
-        });
+    /**
+     *  Test case to ensure insertion of a single node
+     */
+    test('should insert a single node', () => {
+        bst1.insert(5);
+        expect(bst1.root.value).toBe(5);
+        expect(bst1.root.left).toBeNull();
+        expect(bst1.root.right).toBeNull();
+    });
 
-        /**
-         * Test case to ensure creation of a tree with multiple nodes.
-         */
-
-        test('should create a tree with nodes 1, 2, 3, and 4', () => {
-
-            bst1.insert(2);
-            bst1.insert(1);
-            bst1.insert(3);
-            bst1.insert(4);
-            // Assert the structure of the tree
-            expect(bst1.root.value).toBe(2);
-            expect(bst1.root.left.value).toBe(1);
-            expect(bst1.root.right.value).toBe(3);
-            expect(bst1.root.right.right.value).toBe(4);
-        });
+    /**
+     * Test case to ensure creation of a tree with multiple nodes.
+     */
+    test('should create a tree with nodes 1, 2, 3, and 4', () => {
+        bst1.insert(2);
+        bst1.insert(1);
+        bst1.insert(3);
+        bst1.insert(4);
+        // Assert the structure of the tree
+        expect(bst1.root.value).toBe(2);
+        expect(bst1.root.left.value).toBe(1);
+        expect(bst1.root.right.value).toBe(3);
+        expect(bst1.root.right.right.value).toBe(4);
     });
 
     /**
@@ -49,11 +44,12 @@ describe('Binary Search Tree', () => {
         bst1.insert(5);
         bst1.insert(3);
         bst1.insert(7);
-        expect(bst1.root.value).toBe(2);
-        expect(bst1.root.left.value).toBe(1);
-        expect(bst1.root.right.value).toBe(3);
+        expect(bst1.root.value).toBe(5);
+        expect(bst1.root.left.value).toBe(3);
+        expect(bst1.root.right.value).toBe(7);
     });
 });
+
 
 describe('Traversal', () => {
     /**
@@ -61,10 +57,11 @@ describe('Traversal', () => {
      */
     let bst1;
     beforeEach(() => {
-        const { BSTree } = bst();
+        // Define a comparison function for numbers
+        const compare = (a, b) => a - b;
+        const { BSTree } = bst(compare);
         bst1 = new BSTree();
     });
-
     /**
      * Test case to perform in-order traversal.
      */

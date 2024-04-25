@@ -1,5 +1,5 @@
 // eslint-disable-next-line max-classes-per-file
-export default function bst() {
+export default function bst(compareFunction) {
     /**
     * Represents a binary search tree node.
     * @class Node
@@ -24,6 +24,7 @@ export default function bst() {
     class BSTree {
         constructor() {
             this.root = null;
+            this.compare = compareFunction;
         }
         /**
         * Inserts a new node with the given value into the binary search tree.
@@ -41,17 +42,19 @@ export default function bst() {
 
         insertRecursively(node, newNode) {
             const node1 = node
-            if (newNode.value < node.value) {
-                if (node.left === null) {
+            const compareResult = this.compare(newNode.value, node1.value);
+
+            if (compareResult < 0) {
+                if (node1.left === null) {
                     node1.left = newNode;
                 } else {
-                    this.insertRecursively(node.left, newNode);
+                    this.insertRecursively(node1.left, newNode);
                 }
-            } else if (newNode.value > node.value) {
-                if (node.right === null) {
+            } else if (compareResult > 0) {
+                if (node1.right === null) {
                     node1.right = newNode;
                 } else {
-                    this.insertRecursively(node.right, newNode);
+                    this.insertRecursively(node1.right, newNode);
                 }
             }
         }
