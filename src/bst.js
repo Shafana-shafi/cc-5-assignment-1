@@ -20,17 +20,16 @@ export default function bst(compareFunction) {
     * Represents a binary search tree.
     * @class BSTree
     */
-
     class BSTree {
         constructor() {
             this.root = null;
             this.compare = compareFunction;
         }
+
         /**
         * Inserts a new node with the given value into the binary search tree.
         * @param {*} value - The value to be inserted.
         */
-
         insert(value) {
             const newNode = new Node(value);
             if (this.root === null) {
@@ -63,7 +62,6 @@ export default function bst(compareFunction) {
         * Performs an in-order traversal of the binary search tree.
         * @returns {Array} - An array containing the values of the nodes in in-order traversal.
         */
-
         inOrderTraversal() {
             const result = [];
             function traverse(node) {
@@ -76,11 +74,11 @@ export default function bst(compareFunction) {
             traverse(this.root);
             return result;
         }
+
         /**
         * Performs a pre-order traversal of the binary search tree.
         * @returns {Array} - An array containing the values of the nodes in pre-order traversal.
         */
-
         preOrderTraversal() {
             const result = [];
             function traverse(node) {
@@ -93,11 +91,11 @@ export default function bst(compareFunction) {
             traverse(this.root);
             return result;
         }
+
         /**
         * Performs a post-order traversal of the binary search tree.
         * @returns {Array} - An array containing the values of the nodes in post-order traversal.
         */
-
         postOrderTraversal() {
             const result = [];
             function traverse(node) {
@@ -118,7 +116,6 @@ export default function bst(compareFunction) {
         * @param {*} node - The node to be deleted.
         * @returns {*} - The root node of the modified subtree.
         */
-
         deleteNode(root, node) {
             const root1 = root;
             if (root1 === null) {
