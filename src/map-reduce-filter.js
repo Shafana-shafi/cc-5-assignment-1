@@ -21,7 +21,7 @@ export function returnEvenNumbers(numbers) {
  * @param {number[]} indices - The array of indices.
  * @returns {number[]} - Array of Fibonacci numbers.
  */
-export function calculateFibonacciNumbersAtIndices(numbers) {
+export function calculateFibonacciNumbersAtIndices(indices) {
     function fib(index) {
         if (index === 0)
             return 0;
@@ -31,7 +31,7 @@ export function calculateFibonacciNumbersAtIndices(numbers) {
         return fib(index - 1) + fib(index - 2);
     }
 
-    return numbers.map((number) => fib(number))
+    return indices.map((number) => fib(number))
 }
 
 /**
@@ -50,12 +50,12 @@ export function convertTemperatureToFahrenheit(poiArray) {
  * @returns {Function} - A function that returns true if the value is less than or equal to the cutoff value.
  */
 export function createCutOff(cutOffValue) {
-    return function cutOff100(value) {
+    return ((value) => {
         if (value <= cutOffValue) {
             return true;
         }
         return false;
-    }
+    })
 }
 
 /**
@@ -104,14 +104,15 @@ export function filterMultiplesof4(numbersArray) {
  * @returns {string[]} - Filtered array of valid email addresses.
  */
 export function filterEmails(addressesArray) {
-    return addressesArray.map(address => {
-        const emailRegex = /[A-Za-z]+@[A-Za-z]+\.[A-Z|a-z]{2,}/;
+    return addressesArray.reduce((acc, address) => {
+        const emailRegex = /[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}/;
         const matches = address.match(emailRegex);
         if (matches) {
-            return matches[0].toLowerCase();
+            const email = matches[0].toLowerCase();
+            acc.push(email);
         }
-        return null;
-    }).filter(email => email);
+        return acc;
+    }, []);
 }
 
 /**
@@ -142,3 +143,143 @@ export function categorizeSafeandUnsafeFood(foods) {
         return { [foodName]: !ingredients.includes("sugar") ? "safe" : "unsafe" }
     })
 }
+
+/**
+ * Finds the second largest number in an array using forEach loop.
+ * @param {number[]} numbersArray - Array of numbers.
+ * @returns {number} - The second largest number.
+ */
+export function toFindSecondLargestWithoutReduce(numbersArray) {
+    let largest = numbersArray[0];
+    let secondLargest = numbersArray[0];
+    numbersArray.forEach(number => {
+        if (number > largest) {
+            secondLargest = largest;
+            largest = number;
+        }
+        else if (number > secondLargest) {
+            secondLargest = number;
+        }
+    })
+    return secondLargest;
+}
+
+/**
+ * Finds the second largest number in an array using reduce method.
+ * @param {number[]} numbersArray - Array of numbers.
+ * @returns {number} - The second largest number.
+ */
+export function toFindSecondLargestUsingReduce(numbersArray) {
+    let secondLargest = numbersArray[0];
+    let largest = numbersArray[0];
+    numbersArray.reduce((_, currentValue) => {
+        if (currentValue > largest) {
+            secondLargest = largest;
+            largest = currentValue;
+        }
+        else if (currentValue > secondLargest && currentValue < largest) {
+            secondLargest = currentValue;
+        }
+        return largest;
+    }, numbersArray[0]);
+    return secondLargest;
+}
+
+/**
+ * Returns an array of objects where each object contains quotes of an author.
+ * @param {Object[]} qoutesList - Array of objects containing quotes and authors.
+ * @returns {Object[]} - Array of objects with authors as keys and their quotes as values.
+ */
+export function getQoutesOfAllAuthors(qoutesList) {
+    return qoutesList.map(qoute => {
+        const author = Object.values(qoute)[1];
+        const qoutes = Object.values(qoute)[0];
+        return { [author]: [qoutes] }
+    })
+}
+
+/**
+ * Returns an array of quotes containing a specific word.
+ * @param {Object[]} quotesList - Array of objects containing quotes.
+ * @param {string} word - The word to search for in quotes.
+ * @returns {string[]} - Array of quotes containing the specified word.
+ */
+export function getQuotesContainingWord(quotesList, word) {
+    return quotesList.reduce((result, quote) => {
+        const quoteText = Object.values(quote)[0];
+        if (quoteText.includes(word)) {
+            result.push(quoteText);
+        }
+        return result;
+    }, []);
+}
+
+/**
+ * Returns an array of strings of quotes.
+ * @param {Object[]} qoutesList - Array of objects containing quotes.
+ * @returns {string[]} - Array of quotes.
+ */
+export function getQoutesString(qoutesList) {
+    return qoutesList.map(qoute => {
+        const qoutes = Object.values(qoute)[0];
+        return qoutes;
+    })
+}
+
+/**
+ * Returns an array of authors from a list of quotes, without duplicates.
+ * @param {Object[]} quotesList - Array of objects containing quotes and authors.
+ * @returns {string[]} - Array of unique author names.
+ */
+export function getAuthorsList(quotesList) {
+    return quotesList.reduce((result, curr) => {
+        const author = Object.values(curr)[1];
+        if (!result.includes(author)) {
+            return result.concat(author);
+        }
+        return result;
+    }, [])
+}
+
+/**
+ * Checks if any element in the array satisfies the provided testing function using reduce method.
+ * @param {any[]} items - Array of items to test.
+ * @param {Function} predicate - Function to test for each element.
+ * @returns {boolean} - True if at least one element passes the test, otherwise false.
+ */
+export function someUsingReduce(items, predicate) {
+    return items.reduce((accumulated, currentValue) => {
+        if (accumulated) {
+            return true;
+        }
+        return predicate(currentValue);
+    }, false);
+}
+
+/**
+ * Checks if any element in the array satisfies the provided testing function using an imperative approach.
+ * @param {any[]} items - Array of items to test.
+ * @param {Function} predicate - Function to test for each element.
+ * @returns {boolean} - True if at least one element passes the test, otherwise false.
+ */
+export function someUsingImperativeApproach(items, predicate) {
+    const result = [];
+    // eslint-disable-next-line no-restricted-syntax
+    for (const item of items) {
+        if (predicate(item)) {
+            result.push(true);
+        }
+        result.push(false);
+    }
+    if (result.includes(true)) {
+        return true;
+    }
+    return false;
+}
+
+
+
+
+
+
+

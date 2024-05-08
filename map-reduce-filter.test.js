@@ -1,4 +1,8 @@
-import { generateSquare, returnEvenNumbers, calculateFibonacciNumbersAtIndices, convertTemperatureToFahrenheit, createCutOff, toReplaceCraftCodeWithCodeCraft, filterStringHavingUorG, filterStringsEndingWithMangOrFy, filterMultiplesof4, filterEmails, filterAgeFromList, categorizeSafeandUnsafeFood } from "./src/map-reduce-filter";
+import { expect, test } from "vitest";
+import {
+    generateSquare, returnEvenNumbers, calculateFibonacciNumbersAtIndices, convertTemperatureToFahrenheit, createCutOff, toReplaceCraftCodeWithCodeCraft, filterStringHavingUorG, filterStringsEndingWithMangOrFy, filterMultiplesof4, filterEmails, filterAgeFromList, categorizeSafeandUnsafeFood, toFindSecondLargestWithoutReduce, toFindSecondLargestUsingReduce, getQoutesOfAllAuthors,
+    getQuotesContainingWord, getQoutesString, getAuthorsList, someUsingImperativeApproach, someUsingReduce
+} from "./src/map-reduce-filter";
 
 describe('tests for map-filter-reduce', () => {
     // Test case setup and assertion
@@ -154,5 +158,164 @@ describe('tests for map-filter-reduce', () => {
         ];
         expect(categorizeSafeandUnsafeFood(foods)).toEqual([{ "idli": "safe" }, { "chapathi": "unsafe" }, { "pizza": "unsafe" }, { "paneer masala": "safe" }])
 
-    })
+    });
+
+    // Test to find the second largest number in an array using forEach loop.
+    test("Test for function to get the second largest in an array using forEach", () => {
+        const numbersArray = [1, 9, 3, 10, 13];
+        expect(toFindSecondLargestWithoutReduce(numbersArray)).toEqual(10);
+    });
+
+    // Test to find the second largest number in an array using reduce method.
+    test("Test for function to get second largest in an array using reduce", () => {
+        const numbersArray = [1, 14, 3, 10, 13];
+        expect(toFindSecondLargestUsingReduce(numbersArray)).toEqual(13);
+    });
+
+    // Test to get quotes and authors from a list of quotes.
+    test("Test for function to to get the qoutes and authors", () => {
+        const qoutesList = [
+            {
+                "text": "Life is change. Growth is optional. Choose wisely.",
+                "author": "Karen Clark"
+            },
+            {
+                "text": "You'll see it when you believe it.",
+                "author": "Buddha"
+            }];
+        expect(getQoutesOfAllAuthors(qoutesList)).toEqual([
+            {
+                "Karen Clark": [
+                    "Life is change. Growth is optional. Choose wisely.",],
+            },
+            {
+                "Buddha": [
+                    "You'll see it when you believe it.",],
+            },
+        ]);
+    });
+
+    // Test to get quotes containing a specific word.
+    test("Test for function that returns qoutes array that has given word", () => {
+        const qoutesList = [{
+            "text": "Life is a learning experience, only if you learn.",
+            "author": "Yogi Berra"
+        },
+        {
+            "text": "We can only learn to love by loving hate",
+            "author": "Lao Tzu"
+        },
+        {
+            "text": "I hate no one",
+            "author": "none"
+        }
+        ];
+        const word = "hate"
+        expect(getQuotesContainingWord(qoutesList, word)).toEqual(["We can only learn to love by loving hate", "I hate no one"])
+    });
+
+    // Test to get quotes containing a specific word
+    test("Test for function to get Quotes string", () => {
+        const qoutesList = [{
+            "text": "Life is a learning experience, only if you learn.",
+            "author": "Yogi Berra"
+        },
+        {
+            "text": "We can only learn to love by loving hate",
+            "author": "Lao Tzu"
+        },
+        {
+            "text": "I hate me",
+            "author": "me"
+        }]
+        expect(getQoutesString(qoutesList)).toEqual(["Life is a learning experience, only if you learn.", "We can only learn to love by loving hate", "I hate me"])
+    });
+
+    // Test to get quotes as strings
+    test("Test for function to get authors from list by removing duplicates", () => {
+        const qoutesList = [
+            {
+                "text": "Genius is one percent inspiration and ninety-nine percent perspiration.",
+                "author": "Thomas Edison"
+            },
+            {
+                "text": "You can observe a lot just by watching.",
+                "author": "Yogi Berra"
+            },
+            {
+                "text": "To invent, you need a good imagination and a pile of junk",
+                "author": "Thomas Edison"
+            },
+            {
+                "text": "Difficulties increase the nearer we get to the goal.",
+                "author": "Yogi Berra"
+            },
+            {
+                "text": "Fate is in your hands and no one elses",
+                "author": "Byron Pulsifer"
+            },
+            {
+                "text": "Be the chief but never the lord.",
+                "author": "Lao Tzu"
+            },
+            {
+                "text": "Nothing happens unless first we dream.",
+                "author": "Byron Pulsifer"
+            },
+            {
+                "text": "Well begun is half done.",
+                "author": "Aristotle"
+            },
+            {
+                "text": "Life is a learning experience, only if you learn.",
+                "author": "Yogi Berra"
+            },
+            {
+                "text": "Self-complacency is fatal to progress.",
+                "author": "Margaret Sangster"
+            },
+            {
+                "text": "Peace comes from within. Do not seek it without.",
+                "author": "Buddha"
+            },
+            {
+                "text": "What you give is what you get.",
+                "author": "Byron Pulsifer"
+            },
+            {
+                "text": "We can only learn to love by loving.",
+                "author": "Lao Tzu"
+            },
+            {
+                "text": "Life is change. Growth is optional. Choose wisely.",
+                "author": "Karen Clark"
+            },
+            {
+                "text": "You'll see it when you believe it.",
+                "author": "Buddha"
+            },];
+        expect(getAuthorsList(qoutesList)).toEqual(["Thomas Edison", "Yogi Berra", "Byron Pulsifer", "Lao Tzu", "Aristotle", "Margaret Sangster", "Buddha", "Karen Clark",]);
+    });
+
+    // Test for some function in imperative approach.
+    test("Test for some function in imperative approach", () => {
+        const numbersArray = [1, 7, 3, 9, 5];
+        function isEven(number) {
+            if (number % 2 === 0)
+                return true;
+            return false;
+        }
+        expect(someUsingImperativeApproach(numbersArray, isEven)).toBe(false);
+    });
+
+    // Test Some function using Reduce.
+    test("Test for some function using reduce", () => {
+        const numbersArray = [1, 7, 3, 9, 5];
+        function isEven(number) {
+            if (number % 2 === 0)
+                return true;
+            return false;
+        }
+        expect(someUsingReduce(numbersArray, isEven)).toBe(false);
+    });
 })
