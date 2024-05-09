@@ -64,10 +64,9 @@ export function createCutOff(cutOffValue) {
  * @returns {string[]} - Array of strings with "CraftCode" replaced by "CodeCraft".
  */
 export function toReplaceCraftCodeWithCodeCraft(strings) {
-    return strings.map(string => {
-        const transformedString = string.replace("CraftCode", "CodeCraft");
-        return transformedString;
-    })
+    return strings.map((string) =>
+        string.replace("CraftCode", "CodeCraft")
+    )
 }
 
 /**
@@ -122,11 +121,10 @@ export function filterEmails(addressesArray) {
  * @returns {number[]} - Array of ages.
  */
 export function filterAgeFromList(listOfPeople) {
-    const ages = [];
-    listOfPeople.forEach(person =>
-        ages.push(person.age)
-    );
-    return ages
+    return listOfPeople.reduce((acc, person) => {
+        acc.push(person.age);
+        return acc;
+    }, [])
 }
 
 /**
@@ -277,9 +275,335 @@ export function someUsingImperativeApproach(items, predicate) {
     return false;
 }
 
+/**
+ * Calculate the total salary of employees under 30 years old.
+ * @param {Array<Object>} employeesList - List of employee objects with 'age' and 'salary' properties.
+ * @returns {number} - Total salary of employees under 30.
+ */
+export function getTotalSalaryForEmployeesunder30(employeesList) {
+    return employeesList.reduce((accumulatedSalary, currentEmp) => {
+        if (currentEmp.age <= 30)
+            return currentEmp.salary + accumulatedSalary;
+        return accumulatedSalary;
+    }, 0)
+}
+
+/**
+ * Get the full names of employees.
+ * @param {Array<Object>} employeeList - List of employee objects with 'firstName' and 'lastName' properties.
+ * @returns {Array<string>} - Array of full names of employees.
+ */
+export function getFullNameOfEmployees(employeeList) {
+    const copiedList = [...employeeList];
+    return copiedList.map((currentEmp) => `${currentEmp.firstName} ${currentEmp.lastName}`);
+}
+
+/**
+ * Get a comma-separated string of email addresses of employees.
+ * @param {Array<Object>} employeeList - List of employee objects with 'email' property.
+ * @returns {string} - Comma-separated string of email addresses.
+ */
+export function getEmailString(employeeList) {
+    const copiedList = [...employeeList]
+    return copiedList.reduce((accumulated, currentEmp, index) => {
+        if (index === 0)
+            return currentEmp.email;
+        return `${accumulated},${currentEmp.email}`;
+    }, "")
+}
+
+/**
+ * Finds the fruit or nut with the highest nutrition value for each nutrient.
+ * @param {Array<Object>} fruitsAndNuts - List of fruit and nut objects with 'name' and 'nutritions' properties.
+ * @returns {Object} - Object containing the nutrient with the highest value and the corresponding fruit or nut.
+ */
+export function findFruitOrNutWithHighestNutrition(fruitsAndNuts) {
+    const nutritionValues = {};
+    const fruitsAndNutsList = [...fruitsAndNuts]
+    return fruitsAndNutsList.reduce((nutritionAndFruit, currentFruit) => {
+        Object.entries(currentFruit.nutritions).forEach(([key, value]) => {
+            if (Object.keys(nutritionAndFruit).includes(key)) {
+                if (value > nutritionValues[key]) {
+                    nutritionAndFruit[key] = currentFruit.name;
+                    nutritionValues[key] = value;
+                }
+            } else {
+                nutritionAndFruit[key] = currentFruit.name;
+                nutritionValues[key] = value;
+            }
+        });
+        return nutritionAndFruit;
+    }, {});
+}
+
+/**
+ * Get the common nutrients from a list of foods.
+ * @param {Array<Object>} nutritionsList - List of food objects with 'nutritions' property.
+ * @returns {Array<string>} - Array of common nutrients.
+ */
+export function getCommonNutrients(nutritionsList) {
+    if (nutritionsList.length === 0) {
+        return [];
+    }
+    const firstFoodNutrients = Object.keys(nutritionsList[0].nutritions);
+    const commonNutrients = nutritionsList.reduce((accumulated, currentFood) => {
+        const currentNutrients = Object.keys(currentFood.nutritions);
+        return accumulated.filter(nutrient => currentNutrients.includes(nutrient));
+    }, firstFoodNutrients);
+    return commonNutrients;
+}
 
 
+/**
+ * Get unique diseases treated by fruits from a list of foods.
+ * @param {Array<Object>} nutritionsList - List of food objects with 'type' and 'treats' properties.
+ * @returns {Array<string>} - Array of unique diseases treated by fruits.
+ */
+export function getUniqueDiseaseForFruits(nutritionsList) {
+    return nutritionsList.reduce((accumulated, currentFood) => {
+        if (currentFood.type === "fruit") {
+            currentFood.treats.forEach(disease => { if (!accumulated.includes(disease)) accumulated.push(disease) })
+        }
+        return accumulated;
+    }, [])
+}
 
+/**
+ * Get common diseases treated by nuts from a list of foods.
+ * @param {Array<Object>} nutritionsList - List of food objects with 'type' and 'treats' properties.
+ * @returns {Array<string>} - Array of common diseases treated by nuts.
+ */
+export function getCommonDiseaseTreatedByNuts(foods) {
+    const nuts = foods.filter(food => food.type === "nut");
+    const commonTreats = nuts.reduce((acc, nut) => acc.filter(treat => nut.treats.includes(treat)), nuts[0].treats);
+    return commonTreats;
+}
 
+/**
+ * Transforms an array of foods by calculating the total nutrition of each food item.
+ * @param {Array<Object>} foods - An array of food objects containing nutrition information.
+ * @returns {Array<Object>} - An array of transformed food objects with added 'totalNutrition' property.
+ */
+export function transformedArraywithTotalNutrition(foods) {
+    return foods.reduce((acc, food) => {
+        const totalNutritions = Object.values(food.nutritions).reduce((accumulated, nutrient) => accumulated + nutrient, 0)
+        const transformedFood = { ...food, totalNutrition: totalNutritions }
+        acc.push(transformedFood)
+        return acc;
+    }, [])
+}
 
+/**
+ * Finds foods that treat bone issues and returns their names.
+ * @param {Array<Object>} foods - An array of food objects containing treatment information.
+ * @returns {Array<string>} - An array of food names treating bone issues.
+ */
+export function fruitOrNutSolvingBoneIssue(foods) {
+    const filteredlist = foods.filter(food => Object.values(food.treats).includes("bone issues"));
+    return filteredlist.map(food => food.name)
+}
+
+/**
+ * Finds foods with the maximum number of nutrition types and returns their names.
+ * @param {Array<Object>} foods - An array of food objects containing nutrition information.
+ * @returns {Array<string>} - An array of food names with the maximum nutrition types.
+ */
+export function getFoodWithMaximumNutritionTypes(foods) {
+    return foods.reduce((acc, food) => {
+        const nutritionsCount = Object.keys(food.nutritions).length
+        if (nutritionsCount > acc.maxTypes) {
+            acc.maxTypes = nutritionsCount;
+            acc.foods = [{ name: food.name }]
+        }
+        else if (nutritionsCount === acc.maxTypes) {
+            acc.foods.push({ name: food.name })
+        }
+        return acc;
+    }, { foods: [], maxTypes: 0 }).foods;
+}
+
+/**
+ * Finds a food for treating migraines with high vitamin content.
+ * @param {Array<Object>} foods - An array of food objects containing treatment and nutrition information.
+ * @returns {string} - The name of the food treating migraines with high vitamin content.
+ */
+export function getFoodForMigraneWithHighVitamin(foods) {
+    return foods.filter(food => Object.values(food.treats).includes("migraine") && food.nutritions.vitamins >= 60)[0].name;
+}
+
+/**
+ * Finds a food with the lowest carb value and returns its name.
+ * @param {Array<Object>} foods - An array of food objects containing nutrition information.
+ * @returns {string} - The name of the food with the lowest carb value.
+ */
+export function getFoodWithLowestCarb(foods) {
+    return foods.reduce((acc, food) => {
+        if (Object.keys(food.nutritions).includes("carbs") && food.nutritions.carbs < acc.carbValue) {
+            acc.foodNameWithLowestCarb = food.name;
+            acc.carbValue = food.nutritions.carbs;
+        }
+        return acc;
+    }, { foodNameWithLowestCarb: "", carbValue: Infinity })
+}
+
+/**
+ * Calculates the total protein content from safe nuts.
+ * @param {Array<Object>} foods - An array of food objects containing nutrition and treatment information.
+ * @returns {number} - The total protein content from safe nuts.
+ */
+export function totalProtienForSafeNuts(foods) {
+    return foods.reduce((acc, food) => {
+        if (Object.values(food.treats).includes("sugar") && food.type === "nut" && Object.keys(food.nutritions).includes("protein")) {
+            acc.push(food.nutritions.protein);
+        }
+        return acc;
+    }, []).reduce((acc, protienValue) => acc + protienValue)
+}
+
+/**
+ * Calculates the total vitamins in foods with no sugar.
+ * @param {Array<Object>} foods - An array of food objects containing nutrition and treatment information.
+ * @returns {number} - The total vitamins in foods with no sugar.
+ */
+export function totalVitaminsInFoodWithNoSugar(foods) {
+    return foods.reduce((acc, food) => {
+
+        if (foods.type === "nut" && acc.totalNutsEaten < 1 && 'vitamins' in food.nutritions && !Object.values(food.treats).includes("sugar")) {
+            acc.totalVitamins += food.nutritions.vitamins;
+            acc.totalNutsEaten += 1;
+
+        }
+        if (foods.type === "fruit" && acc.totalFruitsEaten < 1 && 'vitamins' in food.nutritions && !('sugar' in food.nutritions)) {
+            if ('vitamins' in food.nutritions && !('sugar' in food.nutritions)) {
+                acc.totalVitamins += food.nutritions.vitamins;
+                acc.totalFruitsEaten += 1;
+            }
+        }
+        return acc;
+    }, {
+        totalFruitsEaten: 0, totalNutsEaten: 0
+        , totalVitamins: 0
+    }).totalVitamins
+}
+
+/**
+ * Categorizes numbers into odd and even and calculates their sums.
+ * @param {number} number - The upper limit of the numbers to be categorized.
+ * @returns {{ sumOfOddNumbers: number, sumOfEvenNumbers: number }} - The sum of odd and even numbers.
+ */
+export function categorizeNum(number) {
+    const numbers = [];
+    for (let i = 1; i <= number; i += 1) {
+        numbers.push(i);
+    }
+    const categorizedNumbers = numbers.reduce((acc, num) => {
+        if (num % 2 === 0) {
+            acc.even.push(num);
+        } else {
+            acc.odd.push(num);
+        }
+        return acc;
+    }, { odd: [], even: [] });
+    const sumOfOddNumbers = categorizedNumbers.odd.reduce((acc, num) => acc + num)
+    const sumOfEvenNumbers = categorizedNumbers.even.reduce((acc, num) => acc + num)
+    return { sumOfOddNumbers, sumOfEvenNumbers };
+}
+
+/**
+ * Categorizes alphabets into vowels and consonants.
+ * @returns {{ vowels: Array<string>, consonants: Array<string> }} - The categorized vowels and consonants.
+ */
+export function categorizeAlphabets() {
+    const alphabets = [];
+    for (let i = 97; i <= 122; i += 1) {
+        alphabets.push(String.fromCharCode(i));
+    }
+    return alphabets.reduce((result, alphabet) => {
+        if ('aeiou'.includes(alphabet)) {
+            result.vowels.push(alphabet);
+        } else {
+            result.consonants.push(alphabet);
+        }
+        return result;
+    }, { vowels: [], consonants: [] });
+}
+
+/**
+ * Extracts unique actor names from movie data.
+ * @param {Array<Object>} movieData - An array of movie objects containing cast information.
+ * @returns {Array<string>} - An array of unique actor names.
+ */
+export function getActorNames(movieData) {
+    const castObject = movieData.reduce((acc, movie) => {
+        movie.cast.forEach(actor => acc.add(actor))
+        return acc;
+    }, new Set());
+    return Array.from(castObject)
+}
+
+/**
+ * Groups movie titles year-wise, listing up to three titles per year.
+ * @param {Array<Object>} moviedata - An array of movie objects containing title and year information.
+ * @returns {Object} - An object with years as keys and arrays of movie titles as values.
+ */
+export function getYearWiseMovie(moviedata) {
+    return moviedata.reduce((acc, movie) => {
+        if (!acc[movie.year]) {
+            acc[movie.year] = [];
+        }
+        if (acc[movie.year].length < 3)
+            acc[movie.year].push(movie.title)
+        return acc;
+    }, {})
+}
+
+/**
+ * Removes leading whitespace characters from a string.
+ * @param {string} str - The input string.
+ * @returns {string} - The string with leading whitespace characters removed.
+ */
+export function trimLeading(str) {
+    return str.split('').reduce((acc, char) => {
+        if (acc.trimmed || char !== ' ') {
+            acc.trimmed = true;
+            acc.result += char;
+        }
+        return acc;
+    }, { result: '', trimmed: false }).result;
+}
+
+/**
+ * Removes trailing whitespace characters from a string.
+ * @param {string} str - The input string.
+ * @returns {string} - The string with trailing whitespace characters removed.
+ */
+export function trimTrailing(str) {
+    return str.split('').reduceRight((acc, char) => {
+        if (acc.trimmed || char !== ' ') {
+            acc.trimmed = true;
+            acc.result = char + acc.result;
+        }
+        return acc;
+    }, { result: '', trimmed: false }).result;
+}
+
+/**
+ * Replaces consecutive spaces in a string with a single space.
+ * @param {string} str - The input string.
+ * @returns {string} - The string with consecutive spaces replaced by a single space.
+ */
+export function singleSpace(str) {
+    return str.replace(/\s+/g, ' ');
+}
+
+/**
+ * Composes multiple functions into a single function.
+ * @param {...Function} funcs - Functions to be composed.
+ * @returns {Function} - A composed function.
+ */
+export function compose(...funcs) {
+    return function (arg) {
+        return funcs.reduceRight((acc, func) => func(acc), arg);
+    };
+}
 

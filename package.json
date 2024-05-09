@@ -12,7 +12,8 @@
   "author": "Shafana",
   "license": "ISC",
   "dependencies": {
-    "@inquirer/prompts": "^4.3.0"
+    "@inquirer/prompts": "^4.3.0",
+    "node-fetch": "3.3.2"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.0.2",
