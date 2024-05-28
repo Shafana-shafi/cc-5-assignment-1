@@ -1,3 +1,4 @@
+import { test } from 'vitest';
 import { createList, listToArray, addItemsToList, insertBeforeNode, removeItem, insertAfter, removeLast, filterList, linkedListOop, traverse } from './src/linkedlist'
 
 describe('addItemsToList function', () => {
