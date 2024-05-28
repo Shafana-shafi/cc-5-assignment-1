@@ -1,10 +1,96 @@
 import { expect, test } from "vitest";
 import {
     generateSquare, returnEvenNumbers, calculateFibonacciNumbersAtIndices, convertTemperatureToFahrenheit, createCutOff, toReplaceCraftCodeWithCodeCraft, filterStringHavingUorG, filterStringsEndingWithMangOrFy, filterMultiplesof4, filterEmails, filterAgeFromList, categorizeSafeandUnsafeFood, toFindSecondLargestWithoutReduce, toFindSecondLargestUsingReduce, getQoutesOfAllAuthors,
-    getQuotesContainingWord, getQoutesString, getAuthorsList, someUsingImperativeApproach, someUsingReduce
+    getQuotesContainingWord, getQoutesString, getAuthorsList, someUsingImperativeApproach, someUsingReduce, getTotalSalaryForEmployeesunder30, getFullNameOfEmployees, getEmailString, getCommonNutrients, getUniqueDiseaseForFruits, getCommonDiseaseTreatedByNuts, transformedArraywithTotalNutrition, fruitOrNutSolvingBoneIssue, getFoodWithMaximumNutritionTypes, getFoodForMigraneWithHighVitamin,
+    getFoodWithLowestCarb, totalProtienForSafeNuts, totalVitaminsInFoodWithNoSugar, categorizeNum, categorizeAlphabets, getActorNames, getYearWiseMovie, trimLeading, trimTrailing, compose, singleSpace
 } from "./src/map-reduce-filter";
 
+
+const fs = require("fs");
+
+const moviesData = require('./movies.json');
+
 describe('tests for map-filter-reduce', () => {
+    const foodList = [
+        {
+            "name": "Banana",
+            "type": "fruit",
+            "treats": [
+                "constipation",
+                "vitamin deficiency",
+                "skin issues",
+                "sleep problems"
+            ],
+            "nutritions": {
+                "protein": 8,
+                "carbs": 40,
+                "sugar": 30,
+                "vitamins": 45
+            }
+        },
+        {
+            "name": "Badam",
+            "type": "nut",
+            "treats": [
+                "bp",
+                "protein deficiency",
+                "skin issues",
+                "sugar"
+            ],
+            "nutritions": {
+                "protein": 18,
+                "carbs": 20,
+                "sugar": 20,
+                "vitamins": 65
+            }
+        },
+        {
+            "name": "Cashew",
+            "type": "nut",
+            "treats": [
+                "bp",
+                "protein deficiency",
+                "skin issues",
+                "bone issues"
+            ],
+            "nutritions": {
+                "protein": 22,
+                "carbs": 22,
+                "vitamins": 60
+            }
+        },
+        {
+            "name": "Wallnut",
+            "type": "nut",
+            "treats": [
+                "bp",
+                "protein deficiency",
+                "skin issues",
+                "bone issues"
+            ],
+            "nutritions": {
+                "protein": 33,
+                "carbs": 26,
+                "vitamins": 64
+            }
+        },
+        {
+            "name": "Apple",
+            "type": "fruit",
+            "treats": [
+                "heart problems",
+                "skin issues",
+                "bone issues",
+                "migraine"
+            ],
+            "nutritions": {
+                "protein": 22,
+                "carbs": 22,
+                "vitamins": 60
+            }
+        }
+
+    ];
     // Test case setup and assertion
     test('test for map function', () => {
         const numbers = [1, 2, 3, 4];
@@ -318,4 +404,294 @@ describe('tests for map-filter-reduce', () => {
         }
         expect(someUsingReduce(numbersArray, isEven)).toBe(false);
     });
+
+    // Test for finding total Salary of employees under 30
+    test("Test for finding total salary of employees under 30", () => {
+        const employeeList = [
+            {
+                "firstName": "Molly",
+                "lastName": "Rojas",
+                "age": 38,
+                "email": "mollyrojas@plasmox.com",
+                "salary": 3065
+            },
+            {
+                "firstName": "Marguerite",
+                "lastName": "Santiago",
+                "age": 27,
+                "email": "margueritesantiago@plasmox.com",
+                "salary": 2796
+            },
+            {
+                "firstName": "Evelyn",
+                "lastName": "Oneil",
+                "age": 26,
+                "email": "evelynoneil@plasmox.com",
+                "salary": 3947
+            },
+            {
+                "firstName": "Consuelo",
+                "lastName": "Case",
+                "age": 23,
+                "email": "consuelocase@plasmox.com",
+                "salary": 2819
+            },
+            {
+                "firstName": "Earline",
+                "lastName": "Bush",
+                "age": 29,
+                "email": "earlinebush@plasmox.com",
+                "salary": 3494
+            },
+            {
+                "firstName": "Sanford",
+                "lastName": "Hurley",
+                "age": 26,
+                "email": "sanfordhurley@plasmox.com",
+                "salary": 3068
+            },
+            {
+                "firstName": "Todd",
+                "lastName": "Gomez",
+                "age": 33,
+                "email": "toddgomez@plasmox.com",
+                "salary": 3906
+            }
+        ];
+        expect(getTotalSalaryForEmployeesunder30(employeeList)).toEqual(16124);
+    });
+
+    // Test for function to get array of full names of employees. 
+    test("Test for function to get array of full names of employees ", () => {
+        const employeeList = [
+            {
+                "firstName": "Molly",
+                "lastName": "Rojas",
+                "age": 38,
+                "email": "mollyrojas@plasmox.com",
+                "salary": 3065
+            },
+            {
+                "firstName": "Marguerite",
+                "lastName": "Santiago",
+                "age": 27,
+                "email": "margueritesantiago@plasmox.com",
+                "salary": 2796
+            },
+            {
+                "firstName": "Evelyn",
+                "lastName": "Oneil",
+                "age": 26,
+                "email": "evelynoneil@plasmox.com",
+                "salary": 3947
+            },
+            {
+                "firstName": "Consuelo",
+                "lastName": "Case",
+                "age": 23,
+                "email": "consuelocase@plasmox.com",
+                "salary": 2819
+            },
+            {
+                "firstName": "Earline",
+                "lastName": "Bush",
+                "age": 29,
+                "email": "earlinebush@plasmox.com",
+                "salary": 3494
+            },
+            {
+                "firstName": "Sanford",
+                "lastName": "Hurley",
+                "age": 26,
+                "email": "sanfordhurley@plasmox.com",
+                "salary": 3068
+            },
+            {
+                "firstName": "Todd",
+                "lastName": "Gomez",
+                "age": 33,
+                "email": "toddgomez@plasmox.com",
+                "salary": 3906
+            }
+        ];
+        expect(getFullNameOfEmployees(employeeList)).toEqual([
+            "Molly Rojas",
+            "Marguerite Santiago",
+            "Evelyn Oneil",
+            "Consuelo Case",
+            "Earline Bush",
+            "Sanford Hurley",
+            "Todd Gomez",
+        ]);
+    });
+    test("Test for function to get email of all employees as a string", () => {
+        const employeeList = [
+            {
+                "firstName": "Molly",
+                "lastName": "Rojas",
+                "age": 38,
+                "email": "mollyrojas@plasmox.com",
+                "salary": 3065
+            },
+            {
+                "firstName": "Marguerite",
+                "lastName": "Santiago",
+                "age": 27,
+                "email": "margueritesantiago@plasmox.com",
+                "salary": 2796
+            },
+            {
+                "firstName": "Evelyn",
+                "lastName": "Oneil",
+                "age": 26,
+                "email": "evelynoneil@plasmox.com",
+                "salary": 3947
+            },
+            {
+                "firstName": "Consuelo",
+                "lastName": "Case",
+                "age": 23,
+                "email": "consuelocase@plasmox.com",
+                "salary": 2819
+            },
+            {
+                "firstName": "Earline",
+                "lastName": "Bush",
+                "age": 29,
+                "email": "earlinebush@plasmox.com",
+                "salary": 3494
+            },
+            {
+                "firstName": "Sanford",
+                "lastName": "Hurley",
+                "age": 26,
+                "email": "sanfordhurley@plasmox.com",
+                "salary": 3068
+            },
+            {
+                "firstName": "Todd",
+                "lastName": "Gomez",
+                "age": 33,
+                "email": "toddgomez@plasmox.com",
+                "salary": 3906
+            }
+        ];
+        expect(getEmailString(employeeList)).toEqual("mollyrojas@plasmox.com,margueritesantiago@plasmox.com,evelynoneil@plasmox.com,consuelocase@plasmox.com,earlinebush@plasmox.com,sanfordhurley@plasmox.com,toddgomez@plasmox.com");
+    });
+
+    // Test for function to get object of food with heighest nutrients value
+    test("Test for function to get object of food with heighest nutrients value", () => {
+        expect(getCommonNutrients(foodList)).toEqual([
+            "protein",
+            "carbs",
+            "vitamins",
+        ])
+    });
+
+    // Test for getting array of diseases treated by Nuts
+    test("To get array of diseases treated by Nuts", () => {
+        expect(getUniqueDiseaseForFruits(foodList)).toEqual(["constipation",
+            "vitamin deficiency",
+            "skin issues",
+            "sleep problems",
+            "heart problems",
+            "bone issues",
+            "migraine",]);
+    });
+
+    // Test for getting common diseases treated by Nuts 
+    test("Test for function to get Common disease treated by Nuts", () => {
+        expect(getCommonDiseaseTreatedByNuts(foodList)).toEqual(["bp",
+            "protein deficiency",
+            "skin issues",]);
+    });
+
+    // // Test to add a new key value pair of totalNutritionValue to each food in food object in the list
+    // test('Test to add a new key value pair of totalNutritionValue to each food in food object in the list', () => {
+    //     expect(transformedArraywithTotalNutrition(foodList)).toEqual(["hii"])
+    // })
+
+    // Test for getting an array of foods that solves bone problems
+    test("Test for getting an array of foods that solves bone problems", () => {
+        expect(fruitOrNutSolvingBoneIssue(foodList)).toEqual(["Cashew", "Wallnut", "Apple"])
+    })
+
+    test("", () => {
+        expect(getFoodWithMaximumNutritionTypes(foodList)).toEqual([{ name: "Banana" }, { name: "Badam" }])
+    })
+
+    test("", () => {
+        expect(getFoodForMigraneWithHighVitamin(foodList)).toEqual("Apple")
+    })
+
+    test("Test for getting the food with lowest carb value", () => {
+        expect(getFoodWithLowestCarb(foodList)).toEqual({ foodNameWithLowestCarb: "Badam", carbValue: 20 })
+    })
+    test("To get  total protien in safe food for sugar ", () => {
+        expect(totalProtienForSafeNuts(foodList)).toEqual(18)
+    })
+    test("To get total Vitamins in food with no sugar if one fruit and nut is eaten ", () => {
+        expect(totalVitaminsInFoodWithNoSugar(foodList)).toEqual(0)
+    })
+    test("Function to generate an array of first n natural numbers and categorize them and create sum of them", () => {
+        expect(categorizeNum(9)).toEqual({ sumOfOddNumbers: 25, sumOfEvenNumbers: 20 })
+    })
+    test("Function to categorize alphabet as consonants or vowels", () => {
+        expect(categorizeAlphabets()).toEqual({
+            "consonants": [
+                "b",
+                "c",
+                "d",
+                "f",
+                "g",
+                "h",
+                "j",
+                "k",
+                "l",
+                "m",
+                "n",
+                "p",
+                "q",
+                "r",
+                "s",
+                "t",
+                "v",
+                "w",
+                "x",
+                "y",
+                "z",
+            ],
+            "vowels": [
+                "a",
+                "e",
+                "i",
+                "o",
+                "u",
+            ],
+        })
+    })
+    test("Function to get actors name from movies data", () => {
+        const allActors = getActorNames(moviesData);
+        fs.writeFileSync("./src/actors.json", allActors.toString(), "utf-8");
+    })
+    test("", () => {
+        expect(getYearWiseMovie(moviesData)).toEqual({
+            "2017": [
+                "The Book of Love",
+                "Split",
+                "xXx: Return of Xander Cage",
+            ],
+            "2018": [
+                "Insidious: The Last Key",
+                "The Strange Ones",
+                "Sweet Country",
+            ],
+        })
+    });
+    test("", () => {
+        const trim = compose(trimLeading, trimTrailing, singleSpace)
+        expect(trim(" code   craft  ")).toEqual("code craft");
+    })
+
+
 })
